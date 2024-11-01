@@ -1,0 +1,52 @@
+-- Enable foreign key support
+PRAGMA foreign_keys = ON;
+
+-- Users Table - Store core user information
+CREATE TABLE IF NOT EXISTS users (
+    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    full_name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    deriv_id TEXT UNIQUE,
+    balance REAL DEFAULT 0.00,
+    created_at TEXT DEFAULT (datetime('now', 'localtime'))
+);
+
+-- Transactions Table - Record all financial transactions
+CREATE TABLE IF NOT EXISTS transactions (
+    transaction_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    type TEXT NOT NULL CHECK(type IN ('deposit', 'withdrawal')),
+    amount REAL NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending', 'completed', 'failed')),
+    created_at TEXT DEFAULT (datetime('now', 'localtime')),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+-- Deriv Connections - Track Deriv account connections
+CREATE TABLE IF NOT EXISTS deriv_connections (
+    connection_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER UNIQUE NOT NULL,
+    access_token TEXT,
+    connected_at TEXT DEFAULT (datetime('now', 'localtime')),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+-- Create essential indexes for performance
+CREATE INDEX IF NOT EXISTS idx_user_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_user_deriv ON users(deriv_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(created_at);
+
+-- Insert test user (for development)
+INSERT OR IGNORE INTO users (
+    full_name,
+    email,
+    password,
+    created_at
+) VALUES (
+    'Test User',
+    'test@techcash.com',
+    'hashed_password_here',
+    datetime('now', 'localtime')
+); 

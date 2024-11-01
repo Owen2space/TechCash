@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechCash - Login/Signup</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="auth-container">
+            <div class="logo">
+                <img src="path-to-your-logo.png" alt="TechCash Logo">
+                <h1>TechCash</h1>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+                <button class="tab-btn" onclick="switchTab('connect')">New User</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form" class="form-container active">
+                <h2>Welcome Back!</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="login-email" placeholder="Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="login-password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Login</button>
+                </form>
+            </div>
+
+            <!-- Connect with Deriv Section -->
+            <div id="connect-form" class="form-container">
+                <div class="welcome-text">
+                    <h2>New to TechCash?</h2>
+                    <p>Connect your Deriv account to get started</p>
+                </div>
+
+                <div class="auth-box">
+                    <button class="deriv-btn" onclick="handleDerivAuth()">
+                        <img src="path-to-deriv-logo.png" alt="Deriv">
+                        Connect with Deriv
+                    </button>
+                    
+                    <div class="info-text">
+                        <p>By connecting your Deriv account, you agree to our</p>
+                        <div class="links">
+                            <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DERIV_APP_ID = 'YOUR_DERIV_APP_ID';
+        const REDIRECT_URI = 'http://localhost:3000/callback';
+        const API_URL = 'http://localhost:5000/api';
+
+        function switchTab(tab) {
+            const loginForm = document.getElementById('login-form');
+            const connectForm = document.getElementById('connect-form');
+            const tabs = document.querySelectorAll('.tab-btn');
+
+            if (tab === 'login') {
+                loginForm.classList.add('active');
+                connectForm.classList.remove('active');
+                tabs[0].classList.add('active');
+                tabs[1].classList.remove('active');
+            } else {
+                connectForm.classList.add('active');
+                loginForm.classList.remove('active');
+                tabs[1].classList.add('active');
+                tabs[0].classList.remove('active');
+            }
+        }
+
+        function handleDerivAuth() {
+            const derivAuthUrl = `https://oauth.deriv.com/oauth2/authorize?app_id=${DERIV_APP_ID}&l=en&brand=deriv&redirect_uri=${REDIRECT_URI}`;
+            window.location.href = derivAuthUrl;
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store token
+                    localStorage.setItem('token', data.token);
+                    // Redirect to dashboard
+                    window.location.href = '/dashboard';
+                } else {
+                    alert(data.error || 'Login failed');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Login failed. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html> 

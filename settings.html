@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechCash - Settings</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="settings.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Reuse the sidebar from dashboard -->
+        <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <aside class="sidebar mobile-hidden">
+            <div class="logo">
+                <img src="path-to-your-logo.png" alt="TechCash">
+                <h1>TechCash</h1>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="transactions.html" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Transactions</span>
+                </a>
+                <a href="settings.html" class="nav-item active">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="nav-item logout" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-navigation">
+                <div class="nav-breadcrumb">
+                    <a href="dashboard.html">Dashboard</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Settings</span>
+                </div>
+                <div class="quick-nav">
+                    <button class="quick-nav-btn" onclick="location.href='dashboard.html'">
+                        <i class="fas fa-home"></i>
+                        Dashboard
+                    </button>
+                    <button class="quick-nav-btn" onclick="location.href='transactions.html'">
+                        <i class="fas fa-history"></i>
+                        Transactions
+                    </button>
+                </div>
+            </div>
+
+            <header class="settings-header">
+                <h1>Settings</h1>
+                <p>Manage your account settings and preferences</p>
+            </header>
+
+            <div class="settings-container">
+                <!-- Profile Settings -->
+                <section class="settings-section">
+                    <h2>Profile Settings</h2>
+                    <div class="profile-settings">
+                        <div class="profile-photo">
+                            <img src="path-to-profile-pic.jpg" alt="Profile Picture" id="profile-preview">
+                            <div class="photo-upload">
+                                <label for="photo-input" class="upload-btn">
+                                    <i class="fas fa-camera"></i>
+                                    Change Photo
+                                </label>
+                                <input type="file" id="photo-input" accept="image/*" hidden>
+                            </div>
+                        </div>
+                        <form class="settings-form" id="profile-form">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="fullName" placeholder="Your full name">
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="email" placeholder="Your email" disabled>
+                                <span class="input-note">Email cannot be changed</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="phone" placeholder="Your phone number">
+                            </div>
+                            <button type="submit" class="save-btn">Save Changes</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Security Settings -->
+                <section class="settings-section">
+                    <h2>Security</h2>
+                    <form class="settings-form" id="security-form">
+                        <div class="form-group">
+                            <label>Current Password</label>
+                            <input type="password" id="currentPassword" placeholder="Enter current password">
+                        </div>
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" id="newPassword" placeholder="Enter new password">
+                        </div>
+                        <div class=s"form-group">
+                            <label>Confirm New Password</label>
+                            <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                        </div>
+                        <button type="submit" class="save-btn">Update Password</button>
+                    </form>
+                </section>
+
+                <!-- Notification Settings -->
+                <section class="settings-section">
+                    <h2>Notifications</h2>
+                    <div class="notification-settings">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Email Notifications</h3>
+                                <p>Receive email updates about your account activity</p>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="emailNotif">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Transaction Alerts</h3>
+                                <p>Get notified about deposits and withdrawals</p>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="transactionNotif" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Marketing Updates</h3>
+                                <p>Receive news about products and services</p>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="marketingNotif">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Connected Accounts -->
+                <section class="settings-section">
+                    <h2>Connected Accounts</h2>
+                    <div class="connected-accounts">
+                        <div class="account-item">
+                            <div class="account-info">
+                                <img src="path-to-deriv-logo.png" alt="Deriv">
+                                <div>
+                                    <h3>Deriv Account</h3>
+                                    <p>Connected</p>
+                                </div>
+                            </div>
+                            <button class="disconnect-btn">Disconnect</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Danger Zone -->
+                <section class="settings-section danger-zone">
+                    <h2>Danger Zone</h2>
+                    <div class="danger-actions">
+                        <div class="danger-item">
+                            <div class="danger-info">
+                                <h3>Deactivate Account</h3>
+                                <p>Temporarily disable your account</p>
+                            </div>
+                            <button class="danger-btn">Deactivate</button>
+                        </div>
+                        <div class="danger-item">
+                            <div class="danger-info">
+                                <h3>Delete Account</h3>
+                                <p>Permanently delete your account and all data</p>
+                            </div>
+                            <button class="danger-btn delete">Delete</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Profile photo preview
+        document.getElementById('photo-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile-preview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Profile form submission
+        document.getElementById('profile-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            try {
+                const formData = {
+                    fullName: document.getElementById('fullName').value,
+                    phone: document.getElementById('phone').value
+                };
+
+                const response = await fetch('/api/settings/profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    alert('Profile updated successfully');
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('Failed to update profile');
+            }
+        });
+
+        // Password update
+        document.getElementById('security-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/settings/password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        currentPassword: document.getElementById('currentPassword').value,
+                        newPassword: newPassword
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Password updated successfully');
+                    this.reset();
+                }
+            } catch (error) {
+                console.error('Error updating password:', error);
+                alert('Failed to update password');
+            }
+        });
+
+        // Load user data
+        async function loadUserData() {
+            try {
+                const response = await fetch('/api/user', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                const userData = await response.json();
+                
+                document.getElementById('fullName').value = userData.fullName;
+                document.getElementById('email').value = userData.email;
+                document.getElementById('phone').value = userData.phone || '';
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadUserData);
+
+        // Add these functions to your existing script
+        function handleLogout() {
+            // Clear local storage
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            
+            // Redirect to login page
+            window.location.href = 'index.html';
+        }
+
+        // Mobile menu toggle
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('mobile-hidden');
+            
+            // Add overlay
+            if (!sidebar.classList.contains('mobile-hidden')) {
+                const overlay = document.createElement('div');
+                overlay.className = 'sidebar-overlay';
+                overlay.onclick = toggleSidebar;
+                document.body.appendChild(overlay);
+            } else {
+                const overlay = document.querySelector('.sidebar-overlay');
+                if (overlay) overlay.remove();
+            }
+        }
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html> 

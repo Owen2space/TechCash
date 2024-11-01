@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechCash - Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <aside class="sidebar mobile-hidden">
+            <div class="logo">
+                <img src="path-to-your-logo.png" alt="TechCash">
+                <h1>TechCash</h1>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Transactions</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="welcome-text">
+                    <h2>Welcome back, <span id="username">John</span>!</h2>
+                    <p class="date">Today is <span id="current-date">Monday, 1 January 2024</span></p>
+                </div>
+                <div class="user-menu">
+                    <img src="path-to-profile-pic.jpg" alt="Profile" class="profile-pic">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Balance Card -->
+            <section class="balance-section">
+                <div class="balance-card">
+                    <div class="balance-info">
+                        <h3>Total Balance</h3>
+                        <h2 class="balance-amount">$<span id="balance">10,500.00</span></h2>
+                        <p class="balance-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +2.5% from last week
+                        </p>
+                    </div>
+                    <div class="balance-actions">
+                        <button class="action-btn deposit">
+                            <i class="fas fa-plus"></i>
+                            Deposit
+                        </button>
+                        <button class="action-btn withdraw">
+                            <i class="fas fa-minus"></i>
+                            Withdraw
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Stats -->
+            <section class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon deposits">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Deposits</h3>
+                        <p>$15,000.00</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon withdrawals">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Withdrawals</h3>
+                        <p>$4,500.00</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon transactions">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Transactions</h3>
+                        <p>125</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Transactions -->
+            <section class="transactions-section">
+                <div class="section-header">
+                    <h3>Recent Transactions</h3>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="transactions-list">
+                    <div class="transaction-item">
+                        <div class="transaction-icon deposit">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="transaction-info">
+                            <h4>Deposit from Deriv</h4>
+                            <p class="transaction-date">Today, 2:45 PM</p>
+                        </div>
+                        <div class="transaction-amount positive">
+                            +$1,000.00
+                        </div>
+                    </div>
+                    <div class="transaction-item">
+                        <div class="transaction-icon withdraw">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="transaction-info">
+                            <h4>Withdrawal to Bank</h4>
+                            <p class="transaction-date">Yesterday, 4:30 PM</p>
+                        </div>
+                        <div class="transaction-amount negative">
+                            -$500.00
+                        </div>
+                    </div>
+                    <!-- More transaction items -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Update current date
+        function updateDate() {
+            const date = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-date').textContent = date.toLocaleDateString('en-US', options);
+        }
+
+        // Fetch user data
+        async function fetchUserData() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/user`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const userData = await response.json();
+                
+                // Update UI with user data
+                document.getElementById('username').textContent = userData.fullName;
+                document.getElementById('balance').textContent = 
+                    new Intl.NumberFormat('en-US', { minimumFractionDigits: 2 })
+                        .format(userData.balance);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDate();
+            fetchUserData();
+        });
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const container = document.querySelector('.dashboard-container');
+            
+            sidebar.classList.toggle('mobile-hidden');
+            container.classList.toggle('sidebar-active');
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.querySelector('.mobile-menu-toggle');
+            
+            if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+                sidebar.classList.add('mobile-hidden');
+                document.querySelector('.dashboard-container').classList.remove('sidebar-active');
+            }
+        });
+    </script>
+</body>
+</html> 
